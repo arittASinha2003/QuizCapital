@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz End</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body id="app">
+  <div class="container">
+    <h1>Quiz Over!</h1>
+    <h2>Your Score: <%= totalScore %> / <%= maxScore %></h2>
+    <% if (completed) { %>
+      <p>Congratulations! You completed the quiz.</p>
+    <% } else { %>
+      <p>Better luck next time!</p>
+    <% } %>
+    <a href="/" class="restart-button">Restart Quiz</a>
+  </div>
+</body>
+</html>

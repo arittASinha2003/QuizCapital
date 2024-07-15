@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start Quiz</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <form class="container" action="/start" method="post">
+    <h1>Welcome to the Capital City Quiz!</h1>
+    <div class="answer-container">
+      <label for="totalQuestions">How many questions do you want to attempt?</label>
+      <input type="number" name="totalQuestions" id="totalQuestions" required min="1">
+    </div>
+    <button type="submit">Start Quiz</button>
+  </form>
+</body>
+</html>
