@@ -1,9 +1,9 @@
 
 # Capital City Quiz Application
 
-The Capital City Quiz Application is a `Node.js` web application that quizzes users on the capital cities of various states of India, stored in `Azure SQL Database`. Users can specify the number of questions they want to attempt, and the quiz will end either when the specified number of questions has been answered or when a wrong answer is given.
+The Capital City Quiz Application is a `Node.js` web application that quizzes users on the capital cities of various states of India, stored in `MongoDB Atlas`. Users can specify the number of questions they want to attempt, and the quiz will end either when the specified number of questions has been answered or when a wrong answer is given.
 
-Azure Web App Link: [Click Here](https://quizjs.azurewebsites.net/)
+Quiz Web App Link: [Click Here](https://quizcapital.onrender.com/)
 
 ## Features
 
@@ -14,15 +14,15 @@ Azure Web App Link: [Click Here](https://quizjs.azurewebsites.net/)
 ## Prerequisites
 
 - Node.js and npm installed. [Click Here](https://nodejs.org/)
-- Azure SQL Server database setup with a table named `capitals` containing columns `state` and `capital`. [Click Here](https://portal.azure.com/)
+- MongoDB Cloud Atlas setup with a database named `quizdb`, and collection name as `capitals`, containing documents with `state` and `capital` parameters. [Click Here](https://cloud.mongodb.com/)
 
 ## Installation
 
 1. **Clone the repository:**
 
 ```bash
-  git clone https://github.com/arittASinha2003/QuizJS.git
-  cd QuizJS
+  git clone https://github.com/arittASinha2003/QuizCapital.git
+  cd QuizCapital
 ```
 
 2. **Install dependencies:**
@@ -36,7 +36,7 @@ Azure Web App Link: [Click Here](https://quizjs.azurewebsites.net/)
 Create a `.env` file in the root directory and add your database connection string and port number:
 
 ```plaintext
-  DB_CONNECTION_STRING = your_connection_string_here
+  MONGODB_URI = your_connection_string_here
   PORT = 8080
 ```
 
@@ -55,7 +55,7 @@ Create a `.env` file in the root directory and add your database connection stri
 ## Folder Structure
 
 ```plaintext
-Quiz/
+QuizCapital/
 ├── node_modules/
 ├── public/
 │   ├── images/
