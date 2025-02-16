@@ -5,11 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capital City Quiz</title>
   <link rel="stylesheet" href="/styles/main.css">
+  <script>
+    let timer;
+    let countdown = 10; // 10 seconds for each question
+
+    // Start the countdown timer
+    function startTimer() {
+      timer = setInterval(function () {
+        if (countdown > 0) {
+          countdown--;
+          document.getElementById("timer").innerText = "Time Left: " + countdown + "s";
+        } else {
+          // Time's up, automatically submit the answer
+          clearInterval(timer);
+          document.getElementById("quizForm").submit(); // Submit the form after time is up
+        }
+      }, 1000);
+    }
+
+    // Reset the timer and start counting down again for the next question
+    function resetTimer() {
+      countdown = 10; // Reset to 10 seconds
+      document.getElementById("timer").innerText = "Time Left: 10s";
+      startTimer(); // Start the countdown timer again
+    }
+
+    // Call this function when the page is loaded to start the countdown
+    window.onload = function() {
+      startTimer(); // Start the countdown as soon as the question is displayed
+    };
+  </script>
 </head>
 <body id="app">
-  <form class="container" action="/submit" method="post">
+  <form id="quizForm" class="container" action="/submit" method="post">
     <div class="horizontal-container">
       <h3>Total Score: <span id="score"><%= totalScore %></span></h3>
+      <h3 id="timer">Time Left: 10s</h3> <!-- Display the countdown timer -->
     </div>
 
     <% if (question) { %>
@@ -23,7 +54,7 @@
     </div>
 
     <button type="submit">SUBMIT
-      <% if(locals.wasCorrect){ %>
+      <% if (locals.wasCorrect){ %>
         <span class="checkmark">✔</span>
       <% } else if (locals.wasCorrect === false) { %>
         <span class="cross" id="error">✖</span>
