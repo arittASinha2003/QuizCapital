@@ -20,17 +20,21 @@ async function connectToDB() {
     await client.connect();
     const db = client.db('quizdb');
     const collection = db.collection('capitals');
-
+    
+    // Fetch quiz data from MongoDB
     const result = await collection.find().toArray();
     quiz = result;
 
-    // Start the server after fetching quiz data
-    app.listen(port, () => {
-      console.log(`Server is running at http://localhost:${port}`);
-    });
+    console.log("Connected to MongoDB and fetched quiz data.");
   } catch (err) {
     console.error("Error connecting to the database", err);
+    process.exit(1);  // Exit if database connection fails
   }
+
+  // Start the server after successfully fetching the quiz data
+  app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
 }
 
 connectToDB();
@@ -47,8 +51,15 @@ app.get("/", (req, res) => {
 
 app.post("/start", (req, res) => {
   totalQuestions = parseInt(req.body.totalQuestions, 10);
+  
+  // Limit the number of questions to 36 if more than 36 is selected
+  if (totalQuestions > quiz.length) {
+    totalQuestions = quiz.length;
+  }
+
   totalCorrect = 0;
-  currentQuestionIndex = 0;
+  currentQuestionIndex = 0;  // Reset question index
+  shuffleQuiz(quiz); // Shuffle the quiz each time the quiz restarts
   nextQuestion();
   res.render("index.ejs", { question: currentQuestion, totalScore: totalCorrect, wasCorrect: null });
 });
@@ -57,12 +68,16 @@ app.post("/start", (req, res) => {
 app.post("/submit", (req, res) => {
   let answer = req.body.answer.trim();
   let isCorrect = false;
+
+  // Check if the answer is correct
   if (currentQuestion.capital.toLowerCase() === answer.toLowerCase()) {
     totalCorrect++;
     isCorrect = true;
   }
 
   currentQuestionIndex++;
+
+  // If more questions remain, show the next question
   if (currentQuestionIndex < totalQuestions) {
     nextQuestion();
     res.render("index.ejs", {
@@ -71,6 +86,7 @@ app.post("/submit", (req, res) => {
       totalScore: totalCorrect,
     });
   } else {
+    // If all questions have been answered, show the result page
     res.render("end.ejs", {
       totalScore: totalCorrect,
       maxScore: totalQuestions,
@@ -79,11 +95,19 @@ app.post("/submit", (req, res) => {
   }
 });
 
+// Function to get the next question
 function nextQuestion() {
-  if (quiz.length > 0) {
-    const randomState = quiz[Math.floor(Math.random() * quiz.length)];
-    currentQuestion = randomState;
+  if (currentQuestionIndex < quiz.length) {
+    currentQuestion = quiz[currentQuestionIndex];  // Get the next shuffled question
   } else {
-    currentQuestion = null;
+    currentQuestion = null; // If no more questions, show null
+  }
+}
+
+// Function to shuffle the quiz questions
+function shuffleQuiz(quizArray) {
+  for (let i = quizArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [quizArray[i], quizArray[j]] = [quizArray[j], quizArray[i]];  // Swap elements
   }
 }
